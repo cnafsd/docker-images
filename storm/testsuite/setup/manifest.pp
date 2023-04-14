@@ -20,13 +20,16 @@ $packages = [
   'globus-gass-copy-progs',
   'gfal2-util',
   'gfal2-all',
-  'dcache-srmclient',
   'storm-srm-client',
   'davix',
   'myproxy',
   'voms-clients',
   'voms-clients-java',
 ]
+
+package { 'dcache-srmclient-3.0.9-1':
+  ensure => 'installed',
+}
 
 package { $packages:
   ensure => 'latest',
