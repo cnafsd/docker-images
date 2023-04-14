@@ -30,5 +30,3 @@ jobs:
 
       - name: Push docker image
         run: docker push italiangrid/centos7-base:latest
-
-        
