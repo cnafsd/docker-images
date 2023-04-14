@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: build docker image
+name: build centos7-base image
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
       - main
 jobs:
 
-  build-centos7-base-image:
+  build-docker-image:
     runs-on: ubuntu-latest
     
     steps:
