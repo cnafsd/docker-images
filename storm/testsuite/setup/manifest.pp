@@ -12,7 +12,7 @@ file { '/etc/grid-security':
 }
 
 class { 'storm::repo':
-  enabled     => ['stable'],
+  enabled => ['stable'],
 }
 
 $packages = [
@@ -28,11 +28,13 @@ $packages = [
 ]
 
 package { 'dcache-srmclient-3.0.9-1':
-  ensure => 'installed',
+  ensure  => 'installed',
+  require => [Class['umd4']],
 }
 
 package { $packages:
-  ensure => 'latest',
+  ensure  => 'latest',
+  require => [Class['umd4']],
 }
 
 yumrepo { 'voms-0621-01':
@@ -57,6 +59,11 @@ package { 'robotframework':
   provider => 'pip3',
 }
 package { 'robotframework-httplibrary':
+  ensure   => installed,
+  require  => [Class['python'], Package['robotframework']],
+  provider => 'pip3',
+}
+package { 'robotframework-jsonlibrary':
   ensure   => installed,
   require  => [Class['python'], Package['robotframework']],
   provider => 'pip3',
@@ -106,6 +113,5 @@ Class['epel']
 -> Class['testca']
 -> Class['storm::repo']
 -> Yumrepo['voms-0621-01']
--> Package[$packages]
 -> Package['robotframework']
 -> User['tester']
