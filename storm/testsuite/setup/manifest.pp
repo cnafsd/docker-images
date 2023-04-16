@@ -68,7 +68,7 @@ package { 'robotframework-jsonlibrary':
   require  => [Class['python'], Package['robotframework']],
   provider => 'pip3',
 }
-package { 'requests':
+package { 'robotframework-requests':
   ensure   => installed,
   require  => [Class['python'], Package['robotframework']],
   provider => 'pip3',
