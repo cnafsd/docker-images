@@ -1,32 +1,44 @@
 FROM italiangrid/centos7-base
 
+ARG PUPPET_STDLIB_VERSION=8.6.0
+ARG PUPPET_FETCHCRL_VERSION=5.1.0
+ARG PUPPET_EPEL_VERSION=4.1.0
+ARG PUPPET_APT_VERSION=8.5.0
+ARG PUPPET_FIREWALL_VERSION=5.0.0
+ARG PUPPET_SAZSUDO_VERSION=7.0.2
+ARG PUPPET_MYSQL_VERSION=14.0.0
+
 ADD setup /setup
 
 ENV PATH="/opt/puppetlabs/bin:${PATH}"
 
 # Install Puppet
-RUN rpm -Uvh https://yum.puppetlabs.com/puppet5/el/7/x86_64/puppet5-release-5.0.0-6.el7.noarch.rpm && \
-  yum install -y puppet
+RUN rpm -Uvh https://yum.puppet.com/puppet7-release-el-7.noarch.rpm && \
+  rpm -Uvh https://yum.puppet.com/puppet-tools-release-el-7.noarch.rpm && \
+  wget http://yum.puppet.com/RPM-GPG-KEY-puppet-20250406 && \
+  rpm --import RPM-GPG-KEY-puppet-20250406 && \
+  yum install -y puppet pdk
 
 RUN puppet --version
 
-# Install specific version of puppetlabs-stdlib because latest v7 is not support by lots of modules
-RUN puppet module install --force puppetlabs-stdlib --version 6.6.0
+# Install specific version of modules
+RUN puppet module install puppetlabs-stdlib --version $PUPPET_STDLIB_VERSION
+RUN puppet module install puppet-epel --version $PUPPET_EPEL_VERSION
+RUN puppet module install puppet-fetchcrl --version $PUPPET_FETCHCRL_VERSION
+RUN puppet module install puppetlabs-apt --version $PUPPET_APT_VERSION
+RUN puppet module install puppetlabs-firewall --version $PUPPET_FIREWALL_VERSION
+RUN puppet module install saz-sudo --version $PUPPET_SAZSUDO_VERSION
+RUN puppet module install puppetlabs-mysql --version $PUPPET_MYSQL_VERSION
 
-# Install specific version of puppet-epel because latest v4.x is not supported by puppet-python
-RUN puppet module install --force puppet-epel --version 3.1.0
 
 # Install Puppet modules
-RUN puppet module install puppet-fetchcrl && \
-    puppet module install puppet-python --version "<=5.0.0" && \
+RUN puppet module install puppet-python --version "<=5.0.0" && \
     puppet module install puppetlabs-java && \
-    puppet module install saz-sudo && \
     puppet module install cnafsd-sdds_users && \
     puppet module install cnafsd-voms && \
     puppet module install cnafsd-testca && \
     puppet module install cnafsd-umd4 && \
-    puppet module install puppetlabs-mysql --version "<=12.0.1" && \
-    puppet module install cnafsd-storm --version "<=3.4.0"
+    puppet module install cnafsd-storm
 
 RUN sh /setup/setup.sh
 
