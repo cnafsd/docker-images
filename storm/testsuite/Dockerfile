@@ -30,7 +30,6 @@ RUN puppet module install puppetlabs-firewall --version $PUPPET_FIREWALL_VERSION
 RUN puppet module install saz-sudo --version $PUPPET_SAZSUDO_VERSION
 RUN puppet module install puppetlabs-mysql --version $PUPPET_MYSQL_VERSION
 
-
 # Install Puppet modules
 RUN puppet module install puppet-python --version "<=5.0.0" && \
     puppet module install puppetlabs-java && \
