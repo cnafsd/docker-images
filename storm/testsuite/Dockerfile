@@ -31,7 +31,7 @@ RUN puppet module install saz-sudo --version $PUPPET_SAZSUDO_VERSION
 RUN puppet module install puppetlabs-mysql --version $PUPPET_MYSQL_VERSION
 
 # Install Puppet modules
-RUN puppet module install puppet-python --version "<=5.0.0" && \
+RUN puppet module install puppet-python && \
     puppet module install puppetlabs-java && \
     puppet module install cnafsd-sdds_users && \
     puppet module install cnafsd-voms && \
