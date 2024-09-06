@@ -25,7 +25,7 @@ ENV PATH="/opt/puppetlabs/bin:${PATH}"
 ENV PUPPET_RELEASE_URL="https://yum.puppet.com/puppet7-release-el-9.noarch.rpm"
 ENV PUPPET_TOOLS_URL="https://yum.puppet.com/puppet-tools-release-el-9.noarch.rpm"
 
-RUN dnf install -y wget
+RUN dnf install -y wget git
 
 # Install Puppet
 RUN rpm -Uvh $PUPPET_RELEASE_URL
